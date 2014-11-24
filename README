@@ -1,0 +1,10 @@
+This puppet module will configure an external postgresql node for your Puppet Enterprise infrastructure.
+
+It will do the following things:
+ - Install postgresql 9.2
+ - Install postgresql-contrib package
+ - Create databases and users that are required by PE
+ - Install the citext module on the rbac databse which is required by PE
+   - https://docs.puppetlabs.com/pe/latest/install_upgrading_notes.html#a-note-about-rbac-node-classifier-and-external-postgresql
+ 
+Currently you can configure passwords for each of the users via paramter.  
