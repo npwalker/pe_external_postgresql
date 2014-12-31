@@ -20,4 +20,14 @@ class { 'pe_external_postgresql' :
   rbac_db_password        => 'pass5',
   activity_db_password    => 'pass6',
 }
-``` 
+```
+
+In order to effectively use this module you will need to do the following in the context of installing PE.
+
+1. Install the PE agent on the node you want to make your external postgresql node
+ - If you are installing a split installation you can install the puppet master node before installing this agent
+ - If you are installing an all-in-one master you will need to install this agent and continue when it says it can't connect to the master
+2. Save the above class declaration to a file on your agent node and modify to your needs
+3. Run `puppet apply /path/to/file` on the agent node to install postgresql and setup the databases. 
+
+ 
