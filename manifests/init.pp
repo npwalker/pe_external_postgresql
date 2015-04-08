@@ -5,11 +5,12 @@ class pe_external_postgresql (
   $classifier_db_password = 'password',
   $rbac_db_password       = 'password',
   $activity_db_password   = 'password',
+  $postgresql_version     = '9.2',
 ) {
 
   class { 'postgresql::globals':
     manage_package_repo => true,
-    version             => '9.2',
+    version             => $postgresql_version,
   } ->
   class { 'postgresql::server':
     ip_mask_deny_postgres_user => '0.0.0.0/32',
