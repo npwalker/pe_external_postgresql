@@ -1,6 +1,6 @@
 {
   "name": "npwalker/pe_external_postgresql",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "npwalker",
   "summary": "A module for installing an external postgresql node for Puppet Enterprise",
   "license": "Apache 2.0",
@@ -9,6 +9,60 @@
   "issues_url": "https://github.com/npwalker/pe_external_postgresql/issues",
   "dependencies": [
     {"name":"puppetlabs-postgresql","version_requirement":">= 3.0.0"}
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "10.04",
+        "12.04",
+        "14.04"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": ">= 3.0.0"
+    }
   ]
 }
-

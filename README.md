@@ -37,3 +37,27 @@ In order to effectively use this module you will need to do the following in the
 3. `/opt/puppet/bin/puppet module install npwalker-pe_external_postgresql`
 4. Run `/opt/puppet/bin/puppet apply /tmp/postgresql_setup.pp` on the agent node to install postgresql and setup the databases.
 
+###Class: pe_external_postgresql
+
+####`postgres_root_password`
+Sets the password for the postgres user.
+
+####`puppetdb_db_password`
+Sets the password for the puppetdb user to connect to the puppetdb database 
+
+####`console_db_password`
+Sets the password for the console user to connect to the console database
+
+####`classifier_db_password`
+Sets the password for the pe-classifier user to connect to the pe-classifier database
+
+####`rbac_db_password`
+Sets the password for the pe-rbac user to connect to the pe-rbac database
+
+####`activity_db_password`
+Sets the password for the pe-activity user to connect to the pe-activity database
+
+####`postgresql_version`
+The version of postgresql to install.  Defaults to 9.2.  
+
+If you are using PE 2015.2 you need to install 9.4

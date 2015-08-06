@@ -45,7 +45,7 @@ class pe_external_postgresql (
   postgresql::server::role { 'console_auth':
     password_hash => postgresql_password('console_auth', 'password'),
   }
- 
+
   postgresql::server::db { 'console_auth':
     user     => 'console_auth',
     password => postgresql_password('console_auth', 'password'),
@@ -71,9 +71,9 @@ class pe_external_postgresql (
 
   $citext_cmd = 'CREATE EXTENSION citext;'
   postgresql_psql { $citext_cmd:
-    db         => 'pe-rbac',
-    unless     => "select * from pg_extension where extname='citext'",
-    require    => Postgresql::Server::Db['pe-rbac'],
+    db      => 'pe-rbac',
+    unless  => "select * from pg_extension where extname='citext'",
+    require => Postgresql::Server::Db['pe-rbac'],
   }
 
   postgresql::server::role { 'pe-activity':
