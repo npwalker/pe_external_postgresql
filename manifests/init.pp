@@ -32,6 +32,13 @@ class pe_external_postgresql (
     password => postgresql_password('pe-puppetdb', $puppetdb_db_password ),
   }
 
+  $pg_trgm_cmd = 'CREATE EXTENSION pg_trgm;'
+  postgresql_psql { $pg_trgm_cmd:
+    db      => 'pe-puppetdb',
+    unless  => "select * from pg_extension where extname='pg_trgm'",
+    require => Postgresql::Server::Db['pe-puppetdb'],
+  }
+
   postgresql::server::role { 'console':
     password_hash => postgresql_password('console', $console_db_password ),
   }
