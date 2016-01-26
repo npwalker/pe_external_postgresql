@@ -1,7 +1,6 @@
 class pe_external_postgresql (
   $postgres_root_password = 'password',
   $puppetdb_db_password   = 'password',
-  $console_db_password    = 'password',
   $classifier_db_password = 'password',
   $rbac_db_password       = 'password',
   $activity_db_password   = 'password',
@@ -37,25 +36,6 @@ class pe_external_postgresql (
     db      => 'pe-puppetdb',
     unless  => "select * from pg_extension where extname='pg_trgm'",
     require => Postgresql::Server::Db['pe-puppetdb'],
-  }
-
-  postgresql::server::role { 'console':
-    password_hash => postgresql_password('console', $console_db_password ),
-  }
-
-  postgresql::server::db { 'console':
-    user     => 'console',
-    password => postgresql_password('console', $console_db_password ),
-  }
-
-  #console_auth is only here for compatibility with older PE releases < 3.7
-  postgresql::server::role { 'console_auth':
-    password_hash => postgresql_password('console_auth', 'password'),
-  }
-
-  postgresql::server::db { 'console_auth':
-    user     => 'console_auth',
-    password => postgresql_password('console_auth', 'password'),
   }
 
   postgresql::server::role { 'pe-classifier':
