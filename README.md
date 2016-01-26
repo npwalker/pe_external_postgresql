@@ -7,11 +7,12 @@ Module Description
 ------------------
 
 It will do the following things:
- - Install postgresql 9.2
+ - Install postgresql 9.4
  - Install postgresql-contrib package
  - Create databases and users that are required by PE
  - Install the citext module on the rbac databse which is required by PE
    - https://docs.puppetlabs.com/pe/latest/install_upgrading_notes.html#a-note-about-rbac-node-classifier-and-external-postgresql
+ - Install the pgstattuple extension on puppetdb and classifer databases
 
 Example Usage
 ------------
