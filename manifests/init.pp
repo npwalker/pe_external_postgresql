@@ -5,7 +5,9 @@ class pe_external_postgresql (
   $rbac_db_password         = 'password',
   $activity_db_password     = 'password',
   $orchestrator_db_password = 'password',
-  $postgresql_version     = '9.4',
+  $postgresql_version       = '9.4',
+  $console                  = true,
+  $puppetdb                 = true,
 ) {
 
   class { 'postgresql::globals':
@@ -23,73 +25,22 @@ class pe_external_postgresql (
 
   include postgresql::server::contrib
 
-  # PuppetDB Database
-  postgresql::server::role { 'pe-puppetdb':
-    password_hash => postgresql_password('pe-puppetdb', $puppetdb_db_password ),
+  if $puppetdb {
+    class { 'pe_external_postgresql::puppetdb':
+      postgres_root_password => $postgres_root_password,
+      puppetdb_db_password   => $puppetdb_db_password,
+      require                => Class['pe_external_postgresql'],
+    }
   }
 
-  postgresql::server::db { 'pe-puppetdb':
-    user     => 'pe-puppetdb',
-    password => postgresql_password('pe-puppetdb', $puppetdb_db_password ),
+  if $console {
+    class { 'pe_external_postgresql::console':
+      postgres_root_password   => $postgres_root_password,
+      classifier_db_password   => $classifier_db_password,
+      rbac_db_password         => $rbac_db_password,
+      activity_db_password     => $activity_db_password,
+      orchestrator_db_password => $orchestrator_db_password,
+      require                  => Class['pe_external_postgresql'],
+    }
   }
-
-  postgresql::server::extension { 'pe-puppetdb-pg_trgm':
-    ensure    => present,
-    extension => 'pg_trgm',
-    database  => 'pe-puppetdb',
-    require   => Postgresql::Server::Db['pe-puppetdb'],
-  }
-
-  postgresql::server::extension { 'pe-puppetdb-pgstattuple':
-    ensure    => present,
-    extension => 'pgstattuple',
-    database  => 'pe-puppetdb',
-    require   => Postgresql::Server::Db['pe-puppetdb'],
-  }
-
-
-  # Classifier database
-  postgresql::server::role { 'pe-classifier':
-    password_hash => postgresql_password('pe-classifier', $classifier_db_password ),
-  }
-
-  postgresql::server::db { 'pe-classifier':
-    user     => 'pe-classifier',
-    password => postgresql_password('pe-classifier', $classifier_db_password ),
-  }
-
-  postgresql::server::extension { 'pe-classifier-pgstattuple':
-    ensure    => present,
-    extension => 'pgstattuple',
-    database  => 'pe-classifier',
-    require   => Postgresql::Server::Db['pe-classifier'],
-  }
-
-  # RBAC Database
-  postgresql::server::role { 'pe-rbac':
-    password_hash => postgresql_password('pe-rbac', $rbac_db_password ),
-  }
-
-  postgresql::server::db { 'pe-rbac':
-    user     => 'pe-rbac',
-    password => postgresql_password('pe-rbac', $rbac_db_password ),
-  }
-
-  postgresql::server::extension { 'pe-rbac-citext':
-    ensure    => present,
-    extension => 'citext',
-    database  => 'pe-rbac',
-    require   => Postgresql::Server::Db['pe-rbac'],
-  }
-
-  # Activity service database
-  postgresql::server::role { 'pe-activity':
-    password_hash => postgresql_password('pe-activity', $activity_db_password ),
-  }
-
-  postgresql::server::db { 'pe-activity':
-    user     => 'pe-activity',
-    password => postgresql_password('pe-activity', $activity_db_password ),
-  }
-
 }
