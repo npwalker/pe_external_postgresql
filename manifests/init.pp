@@ -5,7 +5,7 @@ class pe_external_postgresql (
   $rbac_db_password         = 'password',
   $activity_db_password     = 'password',
   $orchestrator_db_password = 'password',
-  $postgresql_version     = '9.2',
+  $postgresql_version     = '9.4',
 ) {
 
   class { 'postgresql::globals':
