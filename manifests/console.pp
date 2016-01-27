@@ -50,4 +50,14 @@ class pe_external_postgresql::console (
     password => postgresql_password('pe-activity', $activity_db_password ),
   }
 
+  # Orchestrator database
+  postgresql::server::role { 'pe-orchestrator':
+    password_hash => postgresql_password('pe-orchestrator', $orchestrator_db_password ),
+  }
+
+  postgresql::server::db { 'pe-orchestrator':
+    user     => 'pe-orchestrator',
+    password => postgresql_password('pe-orchestrator', $orchestrator_db_password ),
+  }
+
 }

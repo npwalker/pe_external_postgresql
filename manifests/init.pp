@@ -6,13 +6,57 @@ class pe_external_postgresql (
   $activity_db_password     = 'password',
   $orchestrator_db_password = 'password',
   $postgresql_version       = '9.4',
+  $use_pe_packages          = false,
   $console                  = true,
   $puppetdb                 = true,
+
 ) {
 
+
+  if $use_pe_packages {
+    $bindir = '/opt/puppetlabs/server/bin'
+    $pgsql_dir = '/opt/puppetlabs/server/data/postgresql'
+    $client_package_name = 'pe-postgresql'
+    $server_package_name = 'pe-postgresql-server'
+    $contrib_package_name = 'pe-postgresql-contrib'
+    $default_database = 'pe-postgres'
+    $user = 'pe-postgres'
+    $group = 'pe-postgres'
+    $service_name = 'pe-postgresql'
+
+    $datadir = "${pgsql_dir}/${postgresql_version}/data"
+    $confdir = "${pgsql_dir}/${postgresql_version}/data"
+    $psql_path = "${bindir}/psql"
+  } else {
+    $bindir = undef
+    $pgsql_dir = undef
+    $client_package_name = undef
+    $server_package_name = undef
+    $contrib_package_name = undef
+    $default_database = undef
+    $user = undef
+    $group = undef
+    $service_name = undef
+
+    $datadir = undef
+    $confdir = undef
+    $psql_path = undef
+  }
+
   class { 'postgresql::globals':
-    manage_package_repo => true,
-    version             => $postgresql_version,
+    manage_package_repo  => true,
+    version              => $postgresql_version,
+    bindir               => $bindir,
+    client_package_name  => $client_package_name,
+    server_package_name  => $server_package_name,
+    contrib_package_name => $contrib_package_name,
+    default_database     => $default_database,
+    user                 => $user,
+    group                => $group,
+    service_name         => $service_name,
+    datadir              => $datadir,
+    confdir              => $confdir,
+    psql_path            => $psql_path,
   } ->
   class { 'postgresql::server':
     ip_mask_deny_postgres_user => '0.0.0.0/32',
