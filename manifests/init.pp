@@ -32,20 +32,20 @@ class pe_external_postgresql (
   postgresql::server::extension { 'pe-puppetdb-pg_trgm':
     ensure    => present,
     extension => 'pg_trgm',
-    db        => 'pe-puppetdb',
+    database  => 'pe-puppetdb',
     require   => Postgresql::Server::Db['pe-puppetdb'],
   }
 
   postgresql::server::extension { 'pe-puppetdb-pgstattuple':
     ensure    => present,
     extension => 'pgstattuple',
-    db        => 'pe-puppetdb',
+    database  => 'pe-puppetdb',
     require   => Postgresql::Server::Db['pe-puppetdb'],
   }
 
 
   # Classifier database
-  postgresql::server::db { 'pe-classifier':
+  postgresql::server::database{ 'pe-classifier':
     user     => 'pe-classifier',
     password => postgresql_password('pe-classifier', $classifier_db_password ),
   }
@@ -53,7 +53,7 @@ class pe_external_postgresql (
   postgresql::server::extension { 'pe-classifier-pgstattuple':
     ensure    => present,
     extension => 'pgstattuple',
-    db        => 'pe-classifier',
+    database  => 'pe-classifier',
     require   => Postgresql::Server::Db['pe-classifier'],
   }
 
@@ -66,7 +66,7 @@ class pe_external_postgresql (
   postgresql::server::extension { 'pe-rbac-citext':
     ensure    => present,
     extension => 'citext',
-    db        => 'pe-rbac',
+    database  => 'pe-rbac',
     require   => Postgresql::Server::Db['pe-rbac'],
   }
 
