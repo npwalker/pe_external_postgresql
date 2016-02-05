@@ -9,7 +9,6 @@ class pe_external_postgresql (
   $use_pe_packages          = false,
   $console                  = true,
   $puppetdb                 = true,
-
 ) {
 
 
@@ -27,6 +26,7 @@ class pe_external_postgresql (
     $datadir = "${pgsql_dir}/${postgresql_version}/data"
     $confdir = "${pgsql_dir}/${postgresql_version}/data"
     $psql_path = "${bindir}/psql"
+    $manage_package_repo = false
   } else {
     $bindir = undef
     $pgsql_dir = undef
@@ -41,6 +41,7 @@ class pe_external_postgresql (
     $datadir = undef
     $confdir = undef
     $psql_path = undef
+    $manage_package_repo = undef
   }
 
   class { 'postgresql::globals':
@@ -57,6 +58,7 @@ class pe_external_postgresql (
     datadir              => $datadir,
     confdir              => $confdir,
     psql_path            => $psql_path,
+    manage_package_repo  => $manage_package_repo,
   } ->
   class { 'postgresql::server':
     ip_mask_deny_postgres_user => '0.0.0.0/32',
