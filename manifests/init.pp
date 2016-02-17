@@ -45,7 +45,6 @@ class pe_external_postgresql (
   }
 
   class { 'postgresql::globals':
-    manage_package_repo  => true,
     version              => $postgresql_version,
     bindir               => $bindir,
     client_package_name  => $client_package_name,
