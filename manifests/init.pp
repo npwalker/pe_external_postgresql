@@ -44,7 +44,7 @@ class pe_external_postgresql (
     $manage_package_repo = undef
   }
 
-  class { 'postgresql::globals':
+  class { '::postgresql::globals':
     version              => $postgresql_version,
     bindir               => $bindir,
     client_package_name  => $client_package_name,
@@ -59,7 +59,7 @@ class pe_external_postgresql (
     psql_path            => $psql_path,
     manage_package_repo  => $manage_package_repo,
   } ->
-  class { 'postgresql::server':
+  class { '::postgresql::server':
     ip_mask_deny_postgres_user => '0.0.0.0/32',
     ip_mask_allow_all_users    => '0.0.0.0/0',
     listen_addresses           => '*',
@@ -71,7 +71,7 @@ class pe_external_postgresql (
   include postgresql::server::contrib
 
   if $puppetdb {
-    class { 'pe_external_postgresql::puppetdb':
+    class { '::pe_external_postgresql::puppetdb':
       postgres_root_password => $postgres_root_password,
       puppetdb_db_password   => $puppetdb_db_password,
       require                => Class['pe_external_postgresql'],
@@ -79,7 +79,7 @@ class pe_external_postgresql (
   }
 
   if $console {
-    class { 'pe_external_postgresql::console':
+    class { '::pe_external_postgresql::console':
       postgres_root_password   => $postgres_root_password,
       classifier_db_password   => $classifier_db_password,
       rbac_db_password         => $rbac_db_password,
