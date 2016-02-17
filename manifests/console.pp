@@ -11,9 +11,16 @@ class pe_external_postgresql::console (
     password_hash => postgresql_password('pe-classifier', $classifier_db_password ),
   }
 
+  postgresql::server::tablespace { 'pe-classifier':
+    location => "${postgresql::globals::datadir}/pe-classifier",
+    require  => Class['postgresql::server'],
+  }
+
   postgresql::server::db { 'pe-classifier':
-    user     => 'pe-classifier',
-    password => postgresql_password('pe-classifier', $classifier_db_password ),
+    user       => 'pe-classifier',
+    password   => postgresql_password('pe-classifier', $classifier_db_password ),
+    tablespace => 'pe-classifier',
+    require    => Postgresql::Server::Tablespace['pe-classifier'],
   }
 
   postgresql::server::extension { 'pe-classifier-pgstattuple':
@@ -28,9 +35,16 @@ class pe_external_postgresql::console (
     password_hash => postgresql_password('pe-rbac', $rbac_db_password ),
   }
 
+  postgresql::server::tablespace { 'pe-rbac':
+    location => "${postgresql::globals::datadir}/pe-rbac",
+    require  => Class['postgresql::server'],
+  }
+
   postgresql::server::db { 'pe-rbac':
-    user     => 'pe-rbac',
-    password => postgresql_password('pe-rbac', $rbac_db_password ),
+    user       => 'pe-rbac',
+    password   => postgresql_password('pe-rbac', $rbac_db_password ),
+    tablespace => 'pe-rbac',
+    require    => Postgresql::Server::Tablespace['pe-rbac'],
   }
 
   postgresql::server::extension { 'pe-rbac-citext':
@@ -45,9 +59,16 @@ class pe_external_postgresql::console (
     password_hash => postgresql_password('pe-activity', $activity_db_password ),
   }
 
+  postgresql::server::tablespace { 'pe-activity':
+    location => "${postgresql::globals::datadir}/pe-activity",
+    require  => Class['postgresql::server'],
+  }
+
   postgresql::server::db { 'pe-activity':
-    user     => 'pe-activity',
-    password => postgresql_password('pe-activity', $activity_db_password ),
+    user       => 'pe-activity',
+    password   => postgresql_password('pe-activity', $activity_db_password ),
+    tablespace => 'pe-activity',
+    require    => Postgresql::Server::Tablespace['pe-activity'],
   }
 
   # Orchestrator database
@@ -55,9 +76,16 @@ class pe_external_postgresql::console (
     password_hash => postgresql_password('pe-orchestrator', $orchestrator_db_password ),
   }
 
+  postgresql::server::tablespace { 'pe-orchestrator':
+    location => "${postgresql::globals::datadir}/pe-orchestrator",
+    require  => Class['postgresql::server'],
+  }
+
   postgresql::server::db { 'pe-orchestrator':
-    user     => 'pe-orchestrator',
-    password => postgresql_password('pe-orchestrator', $orchestrator_db_password ),
+    user       => 'pe-orchestrator',
+    password   => postgresql_password('pe-orchestrator', $orchestrator_db_password ),
+    tablespace => 'pe-orchestrator',
+    require    => Postgresql::Server::Tablespace['pe-orchestrator'],
   }
 
 }
