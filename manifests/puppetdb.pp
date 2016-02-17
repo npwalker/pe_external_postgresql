@@ -14,9 +14,10 @@ class pe_external_postgresql::puppetdb (
   }
 
   postgresql::server::db { 'pe-puppetdb':
-    user     => 'pe-puppetdb',
-    password => postgresql_password('pe-puppetdb', $puppetdb_db_password ),
-    require  => Postgresql::Server::Tablespace['pe-puppetdb'],
+    user       => 'pe-puppetdb',
+    tablespace => 'pe-puppetdb',
+    password   => postgresql_password('pe-puppetdb', $puppetdb_db_password ),
+    require    => Postgresql::Server::Tablespace['pe-puppetdb'],
   }
 
   postgresql::server::extension { 'pe-puppetdb-pg_trgm':
