@@ -12,7 +12,7 @@ It will do the following things:
  - Create databases and users that are required by PE
  - Install the citext module on the rbac databse which is required by PE
    - https://docs.puppetlabs.com/pe/latest/install_upgrading_notes.html#a-note-about-rbac-node-classifier-and-external-postgresql
- - Install the pgstattuple extension on puppetdb and classifer databases
+ - Install the pgcrypto extension on the puppetdb
 
 Example Usage
 ------------
@@ -26,17 +26,17 @@ In order to effectively use this module you will need to do the following in the
  - 
 		
 			class { 'pe_external_postgresql' :
-			  postgres_root_password  => 'pass1',
-			  puppetdb_db_password    => 'pass2',
-			  console_db_password     => 'pass3',
-			  classifier_db_password  => 'pass4',
-			  rbac_db_password        => 'pass5',
-			  activity_db_password    => 'pass6',
+			  postgres_root_password   => 'pass1',
+			  puppetdb_db_password     => 'pass2',
+			  classifier_db_password   => 'pass3',
+			  rbac_db_password         => 'pass4',
+			  activity_db_password     => 'pass5',
+			  orchestrator_db_password => 'pass6',
 			}
 		
 
-3. `/opt/puppet/bin/puppet module install npwalker-pe_external_postgresql`
-4. Run `/opt/puppet/bin/puppet apply /tmp/postgresql_setup.pp` on the agent node to install postgresql and setup the databases.
+3. `puppet module install npwalker-pe_external_postgresql`
+4. Run `puppet apply /tmp/postgresql_setup.pp` on the agent node to install postgresql and setup the databases.
 
 ###Class: pe_external_postgresql
 
@@ -73,7 +73,7 @@ these packages through the `pe_repo` class. Defaults to `false`.
 
 ###`console`
 Whether or not to manage the PE console databases. If set to `false`, the
-`pe-activity`, `pe-classifier`, `pe-rbac`, and `pe-orchestrator` databases will
+`pe-activity`, `pe-classifier`, and `pe-rbac` databases will
 not be managed. This is useful when installing the Console and PuppetDB
 databases on separate servers. Defaults to `true`.
 
@@ -82,3 +82,8 @@ Whether or not to manage the PE PuppetDB database. If set to `false`, the
 `pe-puppetdb` database will not be managed. This is useful when installing the
 Console and PuppetDB databases on separate servers. Defaults to `true`.
 
+###`orchestrator`
+Whether or not to manage the PE Orchestrator database. If set to `false`, the
+`pe-orchestrator` database will not be managed. I would expect users to place
+this database with the console database but want to leave the option to put it
+somewhere else.  Defaults to `true`.

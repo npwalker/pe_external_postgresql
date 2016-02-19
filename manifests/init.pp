@@ -1,47 +1,45 @@
 class pe_external_postgresql (
-  $postgres_root_password   = 'password',
-  $puppetdb_db_password     = 'password',
-  $classifier_db_password   = 'password',
-  $rbac_db_password         = 'password',
-  $activity_db_password     = 'password',
-  $orchestrator_db_password = 'password',
-  $postgresql_version       = '9.4',
-  $use_pe_packages          = false,
-  $console                  = true,
-  $puppetdb                 = true,
+  String  $postgres_root_password   = 'password',
+  String  $puppetdb_db_password     = 'password',
+  String  $classifier_db_password   = 'password',
+  String  $rbac_db_password         = 'password',
+  String  $activity_db_password     = 'password',
+  String  $orchestrator_db_password = 'password',
+  String  $postgresql_version       = '9.4',
+  Boolean $use_pe_packages          = false,
+  Boolean $console                  = true,
+  Boolean $puppetdb                 = true,
+  Boolean $orchestrator             = true,
 ) {
 
-
   if $use_pe_packages {
-    $bindir = '/opt/puppetlabs/server/bin'
-    $pgsql_dir = '/opt/puppetlabs/server/data/postgresql'
-    $client_package_name = 'pe-postgresql'
-    $server_package_name = 'pe-postgresql-server'
+    $bindir               = '/opt/puppetlabs/server/bin'
+    $pgsql_dir            = '/opt/puppetlabs/server/data/postgresql'
+    $client_package_name  = 'pe-postgresql'
+    $server_package_name  = 'pe-postgresql-server'
     $contrib_package_name = 'pe-postgresql-contrib'
-    $default_database = 'pe-postgres'
-    $user = 'pe-postgres'
-    $group = 'pe-postgres'
-    $service_name = 'pe-postgresql'
-
-    $datadir = "${pgsql_dir}/${postgresql_version}/data"
-    $confdir = "${pgsql_dir}/${postgresql_version}/data"
-    $psql_path = "${bindir}/psql"
-    $manage_package_repo = false
+    $default_database     = 'pe-postgres'
+    $user                 = 'pe-postgres'
+    $group                = 'pe-postgres'
+    $service_name         = 'pe-postgresql'
+    $datadir              = "${pgsql_dir}/${postgresql_version}/data"
+    $confdir              = "${pgsql_dir}/${postgresql_version}/data"
+    $psql_path            = "${bindir}/psql"
+    $manage_package_repo  = false
   } else {
-    $bindir = undef
-    $pgsql_dir = undef
-    $client_package_name = undef
-    $server_package_name = undef
+    $bindir               = undef
+    $pgsql_dir            = undef
+    $client_package_name  = undef
+    $server_package_name  = undef
     $contrib_package_name = undef
-    $default_database = undef
-    $user = undef
-    $group = undef
-    $service_name = undef
-
-    $datadir = undef
-    $confdir = undef
-    $psql_path = undef
-    $manage_package_repo = undef
+    $default_database     = undef
+    $user                 = undef
+    $group                = undef
+    $service_name         = undef
+    $datadir              = undef
+    $confdir              = undef
+    $psql_path            = undef
+    $manage_package_repo  = true 
   }
 
   class { '::postgresql::globals':
@@ -71,21 +69,35 @@ class pe_external_postgresql (
   include postgresql::server::contrib
 
   if $puppetdb {
-    class { '::pe_external_postgresql::puppetdb':
-      postgres_root_password => $postgres_root_password,
-      puppetdb_db_password   => $puppetdb_db_password,
-      require                => Class['pe_external_postgresql'],
+    # PuppetDB Database
+    pe_external_postgresql::database { 'pe-puppetdb':
+      db_password => $puppetdb_db_password,
+      extensions  => [ 'pg_trgm', 'pgcrypto' ],
     }
   }
 
   if $console {
-    class { '::pe_external_postgresql::console':
-      postgres_root_password   => $postgres_root_password,
-      classifier_db_password   => $classifier_db_password,
-      rbac_db_password         => $rbac_db_password,
-      activity_db_password     => $activity_db_password,
-      orchestrator_db_password => $orchestrator_db_password,
-      require                  => Class['pe_external_postgresql'],
+    #Classifier database
+    pe_external_postgresql::database { 'pe-classifier':
+      db_password => $classifier_db_password,
+    }
+
+    # RBAC Database
+    pe_external_postgresql::database { 'pe-rbac':
+      db_password => $rbac_db_password,
+      extensions  => [ 'citext' ],
+    }
+
+    # Activity service database
+    pe_external_postgresql::database { 'pe-activity':
+      db_password => $activity_db_password,
+    }
+  }
+
+  if $orchestrator {
+    # Orchestrator database
+    pe_external_postgresql::database { 'pe-orchestrator':
+      db_password => $orchestrator_db_password,
     }
   }
 }
