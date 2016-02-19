@@ -7,11 +7,12 @@ Module Description
 ------------------
 
 It will do the following things:
- - Install postgresql 9.2
+ - Install postgresql 9.4
  - Install postgresql-contrib package
  - Create databases and users that are required by PE
  - Install the citext module on the rbac databse which is required by PE
    - https://docs.puppetlabs.com/pe/latest/install_upgrading_notes.html#a-note-about-rbac-node-classifier-and-external-postgresql
+ - Install the pgstattuple extension on puppetdb and classifer databases
 
 Example Usage
 ------------
@@ -57,7 +58,27 @@ Sets the password for the pe-rbac user to connect to the pe-rbac database
 ####`activity_db_password`
 Sets the password for the pe-activity user to connect to the pe-activity database
 
-####`postgresql_version`
-The version of postgresql to install.  Defaults to 9.2.  
+####`orchestrator_db_password`
+Sets the password for the pe-orchestrator user to connect to the pe-orchestrator database
 
-If you are using PE 2015.2 you need to install 9.4
+####`postgresql_version`
+The version of postgresql to install.  Defaults to 9.4.
+
+####`use_pe_packages`
+If set to `true`, PostgreSQL will be installed using the Puppet Enterprise
+packages and paths. Note that for this option to work, you must have the
+pe-postgresql and pe-postgresql-contrib packages available in the configured
+machine's package repositories. Typically agent machines will have access to
+these packages through the `pe_repo` class. Defaults to `false`.
+
+###`console`
+Whether or not to manage the PE console databases. If set to `false`, the
+`pe-activity`, `pe-classifier`, `pe-rbac`, and `pe-orchestrator` databases will
+not be managed. This is useful when installing the Console and PuppetDB
+databases on separate servers. Defaults to `true`.
+
+###`puppetdb`
+Whether or not to manage the PE PuppetDB database. If set to `false`, the
+`pe-puppetdb` database will not be managed. This is useful when installing the
+Console and PuppetDB databases on separate servers. Defaults to `true`.
+
