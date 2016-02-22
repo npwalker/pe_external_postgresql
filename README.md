@@ -87,3 +87,9 @@ Whether or not to manage the PE Orchestrator database. If set to `false`, the
 `pe-orchestrator` database will not be managed. I would expect users to place
 this database with the console database but want to leave the option to put it
 somewhere else.  Defaults to `true`.
+
+PE3.x
+------
+
+If you are using PE3.x please use version 1.1.1 of the module which is compatible
+with older versions of PE.
