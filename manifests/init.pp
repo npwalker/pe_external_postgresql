@@ -6,6 +6,7 @@ class pe_external_postgresql (
   String  $activity_db_password     = 'password',
   String  $orchestrator_db_password = 'password',
   String  $postgresql_version       = '9.4',
+  Integer $max_connections          = 200,
   Boolean $use_pe_packages          = false,
   Boolean $console                  = true,
   Boolean $puppetdb                 = true,
@@ -64,6 +65,12 @@ class pe_external_postgresql (
     postgres_password          => $postgres_root_password,
     encoding                   => 'utf8',
     locale                     => 'en_US.utf8',
+  }
+
+  # Starting with PE 2016.1.1; a minimum of 200 max_connections
+  # is recommended
+  postgresql::server::config_entry { 'max_connections':
+    value => $max_connections,
   }
 
   include postgresql::server::contrib

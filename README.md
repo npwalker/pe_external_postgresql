@@ -64,6 +64,9 @@ Sets the password for the pe-orchestrator user to connect to the pe-orchestrator
 ####`postgresql_version`
 The version of postgresql to install.  Defaults to 9.4.
 
+####`max_connections`
+The amount of client connections PSQL will allow. Defaults to 200.
+
 ####`use_pe_packages`
 If set to `true`, PostgreSQL will be installed using the Puppet Enterprise
 packages and paths. Note that for this option to work, you must have the
