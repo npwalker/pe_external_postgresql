@@ -85,7 +85,7 @@ class pe_external_postgresql (
     # RBAC Database
     pe_external_postgresql::database { 'pe-rbac':
       db_password => $rbac_db_password,
-      extensions  => [ 'citext' ],
+      extensions  => [ 'citext', 'pgcrypto'],
     }
 
     # Activity service database
