@@ -5,12 +5,20 @@ class pe_external_postgresql (
   String  $rbac_db_password         = 'password',
   String  $activity_db_password     = 'password',
   String  $orchestrator_db_password = 'password',
-  String  $postgresql_version       = '9.4',
+  Optional[String] $postgresql_version = undef,
   Boolean $use_pe_packages          = false,
   Boolean $console                  = true,
   Boolean $puppetdb                 = true,
   Boolean $orchestrator             = true,
 ) {
+
+  if $postgresql_version == undef {
+    $_postgresql_version = '9.6'
+  } elsif versioncmp( facts['pe_server_version'], '2017.3.0' ) >= 0 {
+    $_postgresql_version = pick($postgresql_version, '9.6')
+  } else {
+    $_postgresql_version = pick($postgresql_version, '9.4')
+  }
 
   if $use_pe_packages {
     $bindir               = '/opt/puppetlabs/server/bin'
@@ -43,7 +51,7 @@ class pe_external_postgresql (
   }
 
   class { '::postgresql::globals':
-    version              => $postgresql_version,
+    version              => $_postgresql_version,
     bindir               => $bindir,
     client_package_name  => $client_package_name,
     server_package_name  => $server_package_name,
