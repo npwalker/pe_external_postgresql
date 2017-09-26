@@ -8,6 +8,10 @@ define pe_external_postgresql::database (
     password_hash => postgresql_password( $db_name, $db_password ),
   }
 
+  postgresql::server::role { "${db_name}-write" :
+    password_hash => postgresql_password( $db_name, $db_password ),
+  }
+
   postgresql::server::tablespace { $db_name :
     location => "${::postgresql::globals::datadir}/${db_name}",
   }
