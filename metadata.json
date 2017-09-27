@@ -1,6 +1,6 @@
 {
   "name": "npwalker/pe_external_postgresql",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "author": "npwalker",
   "summary": "A module for installing an external postgresql node for Puppet Enterprise",
   "license": "Apache 2.0",
@@ -62,7 +62,7 @@
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": ">= 2015.2.0"
+      "version_requirement": ">= 2017.3.0"
     }
   ]
 }
